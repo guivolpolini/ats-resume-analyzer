@@ -43,9 +43,19 @@ ats-resume-analyzer/
 └── README.md
 ```
 
-## Como rodar (em construção)
+## Como rodar
 
-As instruções de instalação e execução do frontend e do backend serão adicionadas conforme cada parte for implementada nas próximas etapas.
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Acesse: http://localhost:5173
+
+As instruções do backend serão adicionadas na próxima etapa.
 
 ## Variáveis de ambiente
 
@@ -74,4 +84,4 @@ O Gemini nunca inventa informações. Ele só reorganiza, melhora e adapta o que
 
 ## Status
 
-Etapa atual: **1 — inicialização do projeto**
+Etapa atual: **2 — frontend React criado (React + Vite + Tailwind CSS)**
