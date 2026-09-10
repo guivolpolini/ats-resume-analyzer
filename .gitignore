@@ -1,0 +1,35 @@
+# ---- Ambiente / segredos ----
+.env
+.env.local
+*.env
+
+# ---- Python / FastAPI ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+
+# ---- Node / React / Vite ----
+node_modules/
+dist/
+build/
+.vite/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ---- Uploads temporários de currículos ----
+backend/uploads/
+backend/tmp/
+
+# ---- Editor / SO ----
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
