@@ -19,10 +19,30 @@ function App() {
 
   // Checagem de saúde da API
   useEffect(() => {
-    fetch(`${API_URL}/health`)
-      .then((res) => res.json())
-      .then((data) => setApiStatus(data.status === 'healthy' ? 'online' : 'offline'))
-      .catch(() => setApiStatus('offline'))
+    const checkApiHealth = async () => {
+      try {
+        const res = await fetch(`${API_URL}/api/health`).catch(() => null)
+        if (res && res.ok) {
+          const data = await res.json().catch(() => null)
+          if (data && data.status === 'healthy') {
+            setApiStatus('online')
+            return
+          }
+        }
+        const fallbackRes = await fetch(`${API_URL}/health`).catch(() => null)
+        if (fallbackRes && fallbackRes.ok) {
+          const fallbackData = await fallbackRes.json().catch(() => null)
+          if (fallbackData && fallbackData.status === 'healthy') {
+            setApiStatus('online')
+            return
+          }
+        }
+        setApiStatus('offline')
+      } catch {
+        setApiStatus('offline')
+      }
+    }
+    checkApiHealth()
   }, [])
 
   const handleFileChange = (e) => {

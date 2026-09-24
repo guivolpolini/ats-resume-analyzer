@@ -67,6 +67,7 @@ if (static_dir / "assets").exists():
 
 @app.get("/health")
 @app.get("/api/health")
+@app.get("/api")
 def health_check():
     """Health check usado para monitoramento e validação de conexão do frontend."""
     return {"status": "healthy"}
