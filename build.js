@@ -24,19 +24,18 @@ execSync('npm install', { stdio: 'inherit' });
 console.log('--- [Build Script] Compilando frontend Vite ---');
 execSync('npm run build', { stdio: 'inherit' });
 
-// Sincroniza dist para todos os locais onde a Vercel pode procurar
+// Sincroniza dist para todos os locais necessários
 const distDir = path.resolve('dist');
 const targets = [
   path.resolve('..', 'dist'),
-  path.resolve('..', 'backend', 'dist')
+  path.resolve('..', 'backend', 'dist'),
+  path.resolve('..', 'backend', 'app', 'static')
 ];
 
 for (const target of targets) {
   try {
-    if (!fs.existsSync(target)) {
-      fs.cpSync(distDir, target, { recursive: true });
-      console.log('--- [Build Script] Sincronizado dist para:', target);
-    }
+    fs.cpSync(distDir, target, { recursive: true });
+    console.log('--- [Build Script] Sincronizado dist para:', target);
   } catch (err) {
     console.warn('Aviso ao sincronizar pasta dist:', err.message);
   }
