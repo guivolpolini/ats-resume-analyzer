@@ -32,10 +32,22 @@ async def analyze_resume_endpoint(
         )
 
     # 2. Executar análise via Gemini Pro
-    analysis_result = analyze_resume_with_gemini(
-        resume_text=resume_text,
-        job_description=cleaned_job,
-    )
+    try:
+        analysis_result = analyze_resume_with_gemini(
+            resume_text=resume_text,
+            job_description=cleaned_job,
+        )
+    except HTTPException:
+        raise
+    except ValueError as ve:
+        raise HTTPException(status_code=400, detail=str(ve))
+    except RuntimeError as re:
+        raise HTTPException(status_code=502, detail=str(re))
+    except Exception as exc:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Erro interno durante a análise do currículo: {str(exc)}",
+        )
 
     return analysis_result
 

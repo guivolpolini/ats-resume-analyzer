@@ -104,10 +104,15 @@ function App() {
         body: formData,
       })
 
-      const data = await response.json()
+      const contentType = response.headers.get('content-type') || ''
+      let data = null
+      if (contentType.includes('application/json')) {
+        data = await response.json().catch(() => null)
+      }
 
       if (!response.ok) {
-        throw new Error(data.detail || 'Ocorreu um erro ao processar a análise.')
+        const errorDetail = data?.detail || (await response.text().catch(() => ''))
+        throw new Error(errorDetail || `Erro ${response.status}: Falha no servidor.`)
       }
 
       setAnalysisResult(data)
