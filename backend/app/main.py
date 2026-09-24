@@ -22,7 +22,7 @@ class VercelPathMiddleware:
         if scope["type"] == "http":
             headers = dict(scope.get("headers", []))
             raw_matched = headers.get(b"x-matched-path", b"").decode("utf-8")
-            if raw_matched and not raw_matched.endswith(".py"):
+            if raw_matched:
                 scope["path"] = raw_matched
         await self.app(scope, receive, send)
 
@@ -66,6 +66,7 @@ if (static_dir / "assets").exists():
 
 
 @app.get("/health")
+@app.get("/api/health")
 def health_check():
     """Health check usado para monitoramento e validação de conexão do frontend."""
     return {"status": "healthy"}
