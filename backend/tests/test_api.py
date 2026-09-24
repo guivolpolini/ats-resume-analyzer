@@ -15,10 +15,10 @@ def test_health_check():
 
 
 def test_root():
-    """Valida o endpoint raiz."""
+    """Valida o endpoint raiz retornando 200 (HTML do frontend ou status JSON)."""
     response = client.get("/")
     assert response.status_code == 200
-    assert response.json().get("status") == "ok"
+    assert ("<!doctype html>" in response.text.lower()) or (response.json().get("status") == "ok")
 
 
 def test_analyze_job_description_too_short():
