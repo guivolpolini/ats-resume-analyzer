@@ -14,16 +14,22 @@ load_dotenv()
 
 
 class VercelPathMiddleware:
-    """Restaura o caminho original da requisição na Vercel através do cabeçalho x-matched-path."""
+    """Restaura o caminho original da rota na Vercel através do parâmetro __path do rewrite."""
     def __init__(self, app: ASGIApp):
         self.app = app
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send):
         if scope["type"] == "http":
-            headers = dict(scope.get("headers", []))
-            raw_matched = headers.get(b"x-matched-path", b"").decode("utf-8")
-            if raw_matched:
-                scope["path"] = raw_matched
+            query_string = scope.get("query_string", b"").decode("utf-8")
+            if "__path=" in query_string:
+                for part in query_string.split("&"):
+                    if part.startswith("__path="):
+                        subpath = part.split("=", 1)[1]
+                        if subpath == "health":
+                            scope["path"] = "/api/health"
+                        else:
+                            scope["path"] = f"/api/{subpath}"
+                        break
         await self.app(scope, receive, send)
 
 
