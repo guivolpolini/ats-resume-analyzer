@@ -6,16 +6,35 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
+from starlette.types import ASGIApp, Receive, Scope, Send
 
 from app.routes.analysis import router as analysis_router
 
 load_dotenv()
+
+
+class VercelPathMiddleware:
+    """Restaura o caminho original da requisição na Vercel através do cabeçalho x-matched-path."""
+    def __init__(self, app: ASGIApp):
+        self.app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send):
+        if scope["type"] == "http":
+            headers = dict(scope.get("headers", []))
+            raw_matched = headers.get(b"x-matched-path", b"").decode("utf-8")
+            if raw_matched and not raw_matched.endswith(".py"):
+                scope["path"] = raw_matched
+        await self.app(scope, receive, send)
+
 
 app = FastAPI(
     title="ATS Resume Analyzer API",
     description="API para análise e otimização de currículos com IA",
     version="0.1.0",
 )
+
+# Adiciona middleware de restauração de path da Vercel
+app.add_middleware(VercelPathMiddleware)
 
 # Origens permitidas
 allowed_origins_env = os.getenv("FRONTEND_ORIGIN", "http://localhost:5173")
