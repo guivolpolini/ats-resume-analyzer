@@ -1,7 +1,6 @@
 {
-  "buildCommand": "node -e \"const fs=require('fs'); if(fs.existsSync('frontend')){process.chdir('frontend');} require('child_process').execSync('npm run build', {stdio: 'inherit'}); try{if(fs.existsSync('dist') && !fs.existsSync('../dist')){fs.cpSync('dist', '../dist', {recursive: true});}}catch(e){}\"",
-  "outputDirectory": "dist",
-  "installCommand": "node -e \"const fs=require('fs'); if(fs.existsSync('frontend')){process.chdir('frontend');} require('child_process').execSync('npm install', {stdio: 'inherit'});\"",
+  "buildCommand": "node build.js",
+  "outputDirectory": "frontend/dist",
   "rewrites": [
     {
       "source": "/api/(.*)",
