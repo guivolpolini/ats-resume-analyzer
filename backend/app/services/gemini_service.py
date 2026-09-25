@@ -11,9 +11,9 @@ from pydantic import BaseModel, Field
 
 load_dotenv()
 
-# Modelos recomendados e estáveis (evitando modelos descontinuados como gemini-pro / gemini-1.5-pro)
-DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-FALLBACK_MODELS = ["gemini-2.5-pro", "gemini-2.0-flash"]
+# Modelos recomendados e estáveis (gemini-3.5-flash-lite é o mais rápido e estável no tier gratuito)
+DEFAULT_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
+FALLBACK_MODELS = ["gemini-3.8-flash", "gemini-3.5-flash"]
 
 SYSTEM_PROMPT_ATS = """Você é um especialista sênior em Recrutamento e Seleção Técnica e Sistemas de Rastreamento de Candidatos (ATS - Applicant Tracking Systems).
 
